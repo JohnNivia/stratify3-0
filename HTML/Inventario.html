@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/app.js">
+    <style>
+        body {font-family: Arial, sans-serif ; max-width: 800px; margin: 20px auto; padding: 0 15px;}
+        .form-group {margin-bottom: 15px;}
+        input, select, textarea{ width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;}
+        input[type="submit"] { background-color: #ebb113; color: black; border: none; cursor: pointer; padding: 10px; font-size: 16px;}
+        input[type="submit"]:hover{ background-color: #FDD76E;}
+        .required {color: red;}
+    </style>
+</head>
+<body>
+    <h1>Buscar producto</h1>
+    <form action="#" method="post">
+        <div class="form-group">
+            <label for="codigo_producto">Codigo producto<span class="required">*</span></label>
+            <input type="text" id="codigo_producto" name="codigo_producto" required>
+
+            <label for="producto"> Nombre producto <span class="required">*</span></label>
+            <input type="text" id="producto" name="producto" required>
+
+            <label for="cantidad">Cantidad <span class="required">*</span></label>
+            <input type="text" id="cantidad" name="cantidad"required>
+            
+            <label for="costo">Costo<span class="required">*</span></label>
+            <input type="int" name="costo" id="costo" required>
+
+            </select>
+
+            <label for="fecha_ingreso">Fecha ingreso<span class="required">*</span></label>
+            <input type="text" id="fecha_ingreso" name="fecha_ingreso" required>
+            
+            <button type="submit">Buscar producto</button>
+        </div>
+        
+    
+    </form>
+    
+    
+</body>
+</html>

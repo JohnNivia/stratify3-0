@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Ubicación</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/app.js">
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 0 15px; }
+        .form-header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 15px; margin-bottom: 20px; }
+        .form-details, .location-details { display: flex; flex-wrap: wrap; justify-content: space-between; margin-bottom: 20px; gap: 15px; }
+        .section-title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+        .form-group { margin-bottom: 10px; min-width: 250px; flex: 1; }
+        label { display: block; margin-bottom: 3px; font-weight: bold; font-size: 0.9em; }
+        input, select, textarea { width: 100%; padding: 7px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9em; }
+        input[type="text"], input[type="number"], select { width: 100%; }
+        .btn-container { margin-top: 20px; }
+        button { background-color: #ebb113; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px; }
+        button:hover { background-color: #FDD76E; }
+        .reset-btn { background-color: #6c757d; }
+        .reset-btn:hover { background-color: #5a6268; }
+        .required { color: red; }
+        .company-info { text-align: left; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="form-header">
+        <h1> UBICACIONES</h1>
+        <div class="company-info">
+            <p><strong>Empresa:</strong> Stratify</p>
+            <p><strong>NIT:</strong> 800.123.456-7</p>
+            <p><strong>Dirección Matriz:</strong> Bogota.DC, Cra 10 # 20-30</p>
+            <p><strong>Teléfono:</strong> (601) 123-4567</p>
+        </div>
+    </div>
+
+    <form action="#" method="post">
+        <!-- Datos generales del registro -->
+        <div class="form-details">
+            <div class="form-group">
+                <label for="codigo-ubicacion">Código de ubicación <span class="required">*</span></label>
+                <input type="text" id="codigo-ubicacion" name="codigo-ubicacion" placeholder="Ej: UBIC-001" required pattern="^[A-Za-z]{4}-\d{3}$" title="Formato válido: 4 letras, guion, 3 dígitos (ej: UBIC-001)">
+            </div>
+            <div class="form-group">
+                <label for="fecha-registro">Fecha de registro <span class="required">*</span></label>
+                <input type="date" id="fecha-registro" name="fecha-registro" required>
+            </div>
+        </div>
+
+        <!-- Datos de la ubicación -->
+        <div class="section-title">Datos de la Ubicación</div>
+        <div class="location-details">
+            <div class="form-group">
+                <label for="lugar-venta">Lugar de venta <span class="required">*</span></label>
+                <input type="text" id="lugar-venta" name="lugar-venta" placeholder="Ej: Centro Comercial Santafé, Localidad Chapinero" required>
+            </div>
+
+            <div class="form-group">
+                <label for="direccion">Dirección completa <span class="required">*</span></label>
+                <textarea id="direccion" name="direccion" rows="2" placeholder="Ej: Cra 25 # 40-15, Piso 3, Bogotá.DC" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="local">Número de local / Identificador <span class="required">*</span></label>
+                <input type="text" id="local" name="local" placeholder="Ej: L-123, Oficina 502, Sucursal Norte" required>
+            </div>
+
+            <div class="form-group">
+                <label for="estado">Estado <span class="required">*</span></label>
+                <select id="estado" name="estado" required>
+                    <option value="" disabled selected>Seleccione el estado...</option>
+                    <option value="ACTIVO">Activo</option>
+                    <option value="INACTIVO">Inactivo</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Información adicional -->
+        <div class="section-title">Información Complementaria</div>
+        <div class="location-details">
+            <div class="form-group">
+                <label for="ciudad">Ciudad <span class="required">*</span></label>
+                <input type="text" id="ciudad" name="ciudad" placeholder="Ej: Bogotá, Medellín, Cali" required>
+            </div>
+            <div class="form-group">
+                <label for="departamento">Departamento <span class="required">*</span></label>
+                <input type="text" id="departamento" name="departamento" placeholder="Ej: Cundinamarca, Antioquia, Valle del Cauca" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="contacto-local">Contacto del local</label>
+            <input type="text" id="contacto-local" name="contacto-local" placeholder="Ej: Juan Pérez - Gerente de Sucursal">
+        </div>
+
+        <div class="form-group">
+            <label for="observaciones">Observaciones</label>
+            <textarea id="observaciones" name="observaciones" rows="3" placeholder="Ej: Horario de atención: L-V 9:00-20:00, Sábados 9:00-14:00. Inaugurada el 01/01/2026"></textarea>
+        </div>
+
+        <div class="form-group">
+            <input type="checkbox" id="datos-correctos" name="datos-correctos" required>
+            <label for="datos-correctos">Confirmo que los datos ingresados son veraces y completos <span class="required">*</span></label>
+        </div>
+
+        <div class="btn-container">
+            <button type="submit">Guardar Ubicación</button>
+            <button type="reset" class="reset-btn">Limpiar Formulario</button>
+        </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro nuevo usuario</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/app.js">
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 0 15px; }
+        .form-group { margin-bottom:  15px;}
+        label { display: block; margin-bottom: 5px; font-weight: bold;}
+        input, select, textarea, input[type="number"]{width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;}
+        input[type="submit"] {background-color: #ebb113; color: #ffffff; border: none; cursor: pointer; padding: 10px ; font-size: 16px;}
+        input[type="submit"]:hover {background-color: #ca9b1a;}
+        .required { color: #d81a1a;}
+        .inline-group {display: flex; gap: 10px;}
+        .inline-group > div {flex: 1;}
+        
+    </style>
+</head>
+<body>
+    <h1>Registos Nuevos Usuarios</h1>
+    <form action="#" method="POST">
+        <div class="form-group">
+            <label for="nombre">Nombre <span class="required">*</span></label>
+            <input type="text" id="nombre" name="Nombre" required>
+            
+            <label for="apellido">Apellido<span class="required">*</span></label>
+            <input type="text" id="apellido" name="apellido" required>
+
+            <label for="correo">Correo <span class="required">*</span></label>
+            <input type="text" id ="correo" name="correo" required>
+
+            <label for="contraseña">Contraseña<span class="required">*</span></label>
+            <input type="password" id="contraseña" name="contraseña" required>
+
+            <label for="tipo_documento">Tipo de Documento <span class="required">*</span></label>
+            <select id="tipo_documento" name="tipo_documento" required>
+                <option value="">Seleccionar</option>
+                <option value="cc">Cedula de Ciudadanía</option>
+                <option value="ce">Cedula de Extranjería</option>
+            </select>
+            <label for="numero_documento">Numero documento <spam class ="required">*</spam></label>
+            <input type="text" id="numero_documento" name="numero_documento" required>
+    
+            <input type="checkbox"id="acepta_validacion" name="acepta_validacion" required>
+            <label for="acepta_validacion"> He verificado que toda la información es correcta</label>
+            <button type="submit">Ingresar usuario</button>
+        </div>
+            
+    </form>
+</body>
+</html>

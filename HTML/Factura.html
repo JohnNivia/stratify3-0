@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura de Venta</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/app.js">
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 0 15px; }
+        .invoice-header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 15px; margin-bottom: 20px; }
+        .invoice-details, .client-details { display: flex; flex-wrap: wrap; justify-content: space-between; margin-bottom: 20px; gap: 15px; }
+        .section-title { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #444; padding-bottom: 5px; }
+        .form-group { margin-bottom: 10px; min-width: 250px; flex: 1; }
+        label { display: block; margin-bottom: 3px; font-weight: bold; font-size: 0.9em; }
+        input, select, textarea { width: 100%; padding: 7px; box-sizing: border-box; border: 1px solid #444; border-radius: 4px; font-size: 0.9em; }
+        input[type="date"], input[type="time"], input[type="number"], input[type="text"] { width: 100%; }
+        .table-container { overflow-x: auto; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #444; padding: 8px; text-align: left; }
+        th { background-color: #f8f9fa; }
+        .total-row { font-weight: bold; background-color: #e9ecef; }
+        button { background-color: #ebb113; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px; }
+        button:hover { background-color: #FDD76E; }
+        .reset-btn { background-color: #6c757d; }
+        .reset-btn:hover { background-color: #5a6268; }
+        .required { color: red; }
+        .company-info { text-align: left; margin-bottom: 10px; }
+        .invoice-number { text-align: right; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="invoice-header">
+        <h1>FACTURA</h1>
+        <div class="company-info">
+            <p><strong>Empresa:</strong> Stratify</p>
+            <p><strong>NIT:</strong> 800.123.456-7</p>
+            <p><strong>Dirección:</strong> Bogota.DC, Cra 10 # 20-30</p>
+            <p><strong>Teléfono:</strong> (601) 123-4567</p>
+        </div>
+    </div>
+
+    <form action="#" method="post">
+        <!-- Datos de la factura -->
+        <div class="invoice-details">
+            <div class="form-group">
+                <label for="fecha-emision">Fecha de emisión <span class="required">*</span></label>
+                <input type="date" id="fecha-emision" name="fecha-emision" required>
+            </div>
+            <div class="form-group">
+                <label for="hora-emision">Hora de emisión <span class="required">*</span></label>
+                <input type="time" id="hora-emision" name="hora-emision" required>
+            </div>
+            <div class="form-group">
+                <label for="numero-factura">Número de factura <span class="required">*</span></label>
+                <input type="text" id="numero-factura" name="numero-factura" placeholder="Ej: FAC-2026-0001" required pattern="^[A-Za-z]{3}-\d{4}-\d{4}$" title="Formato válido: 3 letras, guion, 4 dígitos, guion, 4 dígitos (ej: FAC-2026-0001)">
+            </div>
+            <div class="form-group">
+                <label for="fecha-ingreso">Fecha de ingreso</label>
+                <input type="date" id="fecha-ingreso" name="fecha-ingreso">
+            </div>
+            <div class="form-group">
+                <label for="tipo-factura">Tipo de factura <span class="required">*</span></label>
+                <select id="tipo-factura" name="tipo-factura" required>
+                    <option value="CONTADO">Contado</option>
+                    <option value="CREDITO">Crédito</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Datos del cliente -->
+        <div class="section-title">Datos del Cliente</div>
+        <div class="client-details">
+            <div class="form-group">
+                <label for="tipo-documento">Tipo de documento <span class="required">*</span></label>
+                <select id="tipo-documento" name="Tipo_Documento_idTipo_Documento" required>
+                    <option value="" disabled selected>Seleccione...</option>
+                    <option value="1">Cédula de Ciudadanía</option>
+                    <option value="2">NIT</option>
+                    <option value="3">Cédula de Extranjería</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="numero-documento">Número de documento <span class="required">*</span></label>
+                <input type="text" id="numero-documento" name="numero-documento" list="usuarios-registrados" required placeholder="Digite el número...">
+                <datalist id="usuarios-registrados">
+                    <option value="10102020">
+                    <option value="900123456-1">
+                    <option value="80809090">
+                </datalist>
+            </div>
+
+            <div class="form-group">
+                <label for="nombre-cliente">Primer Nombre  <span class="required">*</span></label>
+                <input type="text" id="nombre-cliente" name="nombre-cliente" required>
+                <label for="segundo nombre-cliente"> Segundo Nombre  <span class="required">*</span></label>
+                <input type="text" id="segundo nombre-cliente" name="segundo nombre-cliente" required>
+                <label for="apellido-cliente">Primer Apellido<span class="required">*</span></label>
+                <input type="text" id="apellido-cliente" name="apellido-cliente" required>
+                <label for="segundo apellido-cliente">Segundo apellido <span class="required">*</span></label>
+                <input type="text" id="segundo apellido-cliente" name="segundo apellido-cliente" required>
+            </div>
+        </div>
+
+        <!-- Detalle de productos/servicios -->
+        <div class="section-title">Detalle de la Venta</div>
+        <div class="table-container">
+            <table id="detalle-venta">
+                <thead>
+                    <tr>
+                        <th>Producto  <span class="required">*</span></th>
+                        <th>Cantidad <span class="required">*</span></th>
+                        <th>Precio unitario (COP) <span class="required">*</span></th>
+                        <th>Descuento (%)</th>
+                        <th>Valor total (COP)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" name="producto-1" required></td>
+                        <td><input type="number" name="cantidad-1" min="1" required oninput="calcularFila(1)"></td>
+                        <td><input type="number" name="precio-unitario-1" min="0.01" step="0.01" required oninput="calcularFila(1)"></td>
+                        <td><input type="number" name="descuento-1" min="0" max="100" step="0.01" value="0" oninput="calcularFila(1)"></td>
+                        <td><input type="number" name="valor-total-1" readonly></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="producto-2"></td>
+                        <td><input type="number" name="cantidad-2" min="1" oninput="calcularFila(2)"></td>
+                        <td><input type="number" name="precio-unitario-2" min="0.01" step="0.01" oninput="calcularFila(2)"></td>
+                        <td><input type="number" name="descuento-2" min="0" max="100" step="0.01" value="0" oninput="calcularFila(2)"></td>
+                        <td><input type="number" name="valor-total-2" readonly></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="total-row">
+                        <td colspan="4">Subtotal (COP)</td>
+                        <td><input type="number" name="subtotal" id="subtotal" readonly></td>
+                    </tr>
+                    <tr class="total-row">
+                        <td colspan="4">IVA (19%) (COP)</td>
+                        <td><input type="number" name="iva" id="iva" readonly></td>
+                    </tr>
+                    <tr class="total-row">
+                        <td colspan="4">Descuento total (COP)</td>
+                        <td><input type="number" name="descuento-total" id="descuento-total" readonly></td>
+                    </tr>
+                    <tr class="total-row">
+                        <td colspan="4">VALOR TOTAL A PAGAR (COP) <span class="required">*</span></td>
+                        <td><input type="number" name="valor-total-pagar" id="valor-total-pagar" readonly required></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <!-- Método de pago y observaciones -->
+        <div class="section-title">Información Adicional</div>
+        <div class="client-details">
+            <div class="form-group">
+                <label for="metodo-pago">Método de pago <span class="required">*</span></label>
+                <select id="metodo-pago" name="metodo-pago" required>
+                    <option value="EFECTIVO">Efectivo</option>
+                    <option value="TARJETA_CREDITO">Tarjeta de Crédito</option>
+                    <option value="TARJETA_DEBITO">Tarjeta de Débito</option>
+                    <option value="TRANSFERENCIA">Transferencia Bancaria</option>
+                    <option value="CHEQUE">Cheque</option>
+                    <option value="OTRO">Otro</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="referencia-pago">Referencia de pago</label>
+                <input type="text" id="referencia-pago" name="referencia-pago" placeholder="Ej: Número de transacción, cheque #">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="observaciones">Observaciones adicionales</label>
+            <textarea id="observaciones" name="observaciones" rows="3" placeholder="Ej: Entrega realizada, condiciones de garantía"></textarea>
+        </div>
+
+        <div class="form-group">
+            <input type="checkbox" id="datos-correctos" name="datos-correctos" required>
+            <label for="datos-correctos">Confirmo que los datos son correctos y autorizo la emisión de esta factura <span class="required">*</span></label>
+        </div>
+
+        <button type="submit">Generar Factura</button>
+        <button type="reset" class="reset-btn" onclick="limpiarCalculos()">Limpiar Formulario</button>
+    </form>
+
+    <script>
+        // Calcular valor total de una fila específica
+        function calcularFila(numFila) {
+            const cantidad = parseFloat(document.querySelector(input[name="cantidad-${numFila}"]).value) || 0;
+            const precioUnitario = parseFloat(document.querySelector(input[name="precio-unitario-${numFila}"]).value) || 0;
+            const descuentoPorc = parseFloat(document.querySelector(input[name="descuento-${numFila}"]).value) || 0;
+            
+            const valorSinDescuento = cantidad * precioUnitario;
+            const descuento = valorSinDescuento * (descuentoPorc / 100);
+            const valorTotalFila = valorSinDescuento - descuento;
+
+            document.querySelector(input[name="valor-total-${numFila}"]).value = valorTotalFila.toFixed(2);
+            
+            calcularTotales();
+        }
+
+        // Calcular subtotal, descuento total, IVA y total a pagar
+        function calcularTotales() {
+            let subtotal = 0;
+            let descuentoTotal = 0;
+            const filas = 2; // Cantidad de filas de productos
+
+            for (let i = 1; i <= filas; i++) {
+                const cantidad = parseFloat(document.querySelector(input[name="cantidad-${i}"]).value) || 0;
+                const precioUnitario = parseFloat(document.querySelector(input[name="precio-unitario-${i}"]).value) || 0;
+                const descuentoPorc = parseFloat(document.querySelector(input[name="descuento-${i}"]).value) || 0;
+                
+                const valorSinDescuento = cantidad * precioUnitario;
+                const descuento = valorSinDescuento * (descuentoPorc / 100);
+                
+                subtotal += valorSinDescuento;
+                descuentoTotal += descuento;
+            }
+
+            const iva = subtotal * 0.19;
+            const totalPagar = (subtotal - descuentoTotal) + iva;
+
+            document.getElementById('subtotal').value = subtotal.toFixed(2);
+            document.getElementById('descuento-total').value = descuentoTotal.toFixed(2);
+            document.getElementById('iva').value = iva.toFixed(2);
+            document.getElementById('valor-total-pagar').value = totalPagar.toFixed(2);
+        }
+
+        // Limpiar cálculos al reiniciar formulario
+        function limpiarCalculos() {
+            document.getElementById('subtotal').value = '';
+            document.getElementById('iva').value = '';
+            document.getElementById('descuento-total').value = '';
+            document.getElementById('valor-total-pagar').value = '';
+            const filas = 2;
+            for (let i = 1; i <= filas; i++) {
+                document.querySelector(input[name="valor-total-${i}"]).value = '';
+            }
+        }
+    </script>
+</body>
+</html>

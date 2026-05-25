@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro de Proveedor</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/app.js">
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 0 15px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        input[type="submit"] { background-color: #ebb113; color: white; border: none; cursor: pointer; padding: 10px; font-size: 16px; }
+        input[type="submit"]:hover { background-color: #FDD76E; }
+        .required { color: rgb(255, 0, 13); }
+    </style>
+</head>
+<body>
+    <h1>Registro de Nuevo Proveedor</h1>
+    <form action="#" method="POST">
+        <!-- Datos básicos de la empresa -->
+        <div class="form-group">
+            <label for="razon_social">Razón Social <span class="required">*</span></label>
+            <input type="text" id="razon_social" name="razon_social" required>
+            <label for="tipo_documento">Tipo de Documento <span class="required">*</span></label>
+            <select id="tipo_documento" name="tipo_documento" required>
+                <option value="">Seleccionar</option>
+                <option value="nit">NIT</option>
+                <option value="cc">Cédula de Ciudadanía</option>
+                <option value="ce">Cédula de Extranjería</option>
+                <option value="rut">RUT (para empresas extranjeras)</option>
+            </select>
+        
+            <label for="numero_documento">Número de Documento <span class="required">*</span></label>
+            <input type="text" id="numero_documento" name="numero_documento" required>
+
+            <label for="direccion">Dirección Fiscal <span class="required">*</span></label>
+            <textarea id="direccion" name="direccion" rows="3" required></textarea>
+
+            <label for="ciudad">Ciudad <span class="required">*</span></label>
+            <input type="text" id="ciudad" name="ciudad" value="Soacha" required>
+
+            <label for="departamento">Departamento <span class="required">*</span></label>
+            <input type="text" id="departamento" name="departamento" value="Cundinamarca" required>
+
+        <!-- Datos de contacto -->
+        <h3>Datos de Contacto</h3>
+            <label for="nombre_contacto">Nombre <span class="required">*</span></label>
+            <input type="text" id="nombre_contacto" name="nombre_contacto" required>
+
+            <label for="apellido">Apellido <span class="required">*</span></label>
+            <input type="text" id="apellido" name="apellido" required>
+
+            <label for="cargo_contacto">Cargo</label>
+            <input type="text" id="cargo_contacto" name="cargo_contacto">
+
+            <label for="telefono">Teléfono <span class="required">*</span></label>
+            <input type="tel" id="telefono" name="telefono" pattern="[0-9]{7,15}" required placeholder="Ej: 3101234567">
+
+            <label for="email">Correo Electrónico <span class="required">*</span></label>
+            <input type="email" id="email" name="email" required>
+
+        <!-- Tipo de productos/servicios -->
+        <h2>Actividad Principal</h2>
+            <label for="rubro">Rubro <span class="required">*</span></label>
+            <select id="rubro" name="rubro" required>
+                <option value="">Seleccionar</option>
+                <option value="alimentos">Alimentos </option>
+                <option value="bebidas">Bebidas</option>
+            </select>
+
+            <label for="descripcion_productos">Descripción de Productos/Servicios <span class="required">*</span></label>
+            <textarea id="descripcion_productos" name="descripcion_productos" rows="4" required placeholder="Especificar los productos o servicios que ofrece"></textarea>
+
+        <!-- Información adicional -->
+            <h3>Información Adicional</h3>
+            <label for="observaciones">Observaciones Adicionales</label>
+            <textarea id="observaciones" name="observaciones" rows="2"></textarea>
+
+            <input type="checkbox" id="acepta_terminos" name="acepta_terminos" required>
+            <label for="acepta_terminos">Acepto los términos y condiciones de registro de proveedores <span class="required">*</span></label>
+            
+            <input type="submit" value="Registrar Proveedor">    
+        </div>
+
+        
+    </form>
+</body>
+</html>
