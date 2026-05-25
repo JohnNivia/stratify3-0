@@ -113,14 +113,9 @@ const StratifyFactura = (() => {
     if (!inputs.cantidad) return null;
     return inputs;
     };
-
-  /**
-   * Calcula el valor total de una fila de producto.
-   * @param {number} rowIndex
-   */
-  const calcularFila = (rowIndex) => {
-    const row = getRowInputs(rowIndex);
-    if (!row) return;
+    const calcularFila = (rowIndex) => {
+      const row = getRowInputs(rowIndex);
+      if (!row) return;
 
     const cantidad       = numVal(row.cantidad);
     const precioUnitario = numVal(row.precioUnitario);
@@ -133,93 +128,75 @@ const StratifyFactura = (() => {
     row.valorTotal.value = formatNumber(valorNeto);
     calcularTotales();
   };
-
-  /**
-   * Cuenta cuántas filas de detalle existen en la tabla de venta.
-   * @returns {number}
-   */
-  const contarFilas = () => {
-    const tbody = document.querySelector('#detalle-venta tbody');
+    const contarFilas = () => {
+      const tbody = document.querySelector('#detalle-venta tbody');
     return tbody ? tbody.querySelectorAll('tr').length : 0;
-  };
-
-  /**
-   * Recalcula subtotal, IVA, descuentos y total a pagar.
-   */
-  const calcularTotales = () => {
-    const totalFilas = contarFilas();
-    let subtotalBruto  = 0;
-    let descuentoTotal = 0;
+    };
+    const calcularTotales = () => {
+      const totalFilas = contarFilas();
+      let subtotalBruto  = 0;
+      let descuentoTotal = 0;
 
     for (let i = 1; i <= totalFilas; i++) {
-      const row = getRowInputs(i);
-      if (!row) continue;
+        const row = getRowInputs(i);
+        if (!row) continue;
 
-      const cantidad       = numVal(row.cantidad);
-      const precioUnitario = numVal(row.precioUnitario);
-      const descuentoPct   = numVal(row.descuento);
+        const cantidad       = numVal(row.cantidad);
+        const precioUnitario = numVal(row.precioUnitario);
+        const descuentoPct   = numVal(row.descuento);
 
-      const valorBruto   = cantidad * precioUnitario;
-      const descuentoAbs = valorBruto * (descuentoPct / 100);
+        const valorBruto   = cantidad * precioUnitario;
+        const descuentoAbs = valorBruto * (descuentoPct / 100);
 
-      subtotalBruto  += valorBruto;
-      descuentoTotal += descuentoAbs;
+        subtotalBruto  += valorBruto;
+        descuentoTotal += descuentoAbs;
     }
 
     const subtotalNeto = subtotalBruto - descuentoTotal;
     const iva          = subtotalNeto * IVA_RATE;
     const totalPagar   = subtotalNeto + iva;
 
-    // Actualizar campos de totales
+    
     const setField = (id, value) => {
-      const el = document.getElementById(id);
-      if (el) el.value = formatNumber(value);
+        const el = document.getElementById(id);
+        if (el) el.value = formatNumber(value);
     };
 
     setField('subtotal',         subtotalBruto);
     setField('descuento-total',  descuentoTotal);
     setField('iva',              iva);
     setField('valor-total-pagar', totalPagar);
-  };
+    };
 
-  /**
-   * Limpia todos los campos calculados (subtotal, IVA, totales).
-   */
-  const limpiarCalculos = () => {
-    ['subtotal', 'iva', 'descuento-total', 'valor-total-pagar'].forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.value = '';
-    });
+    const limpiarCalculos = () => {
+        ['subtotal', 'iva', 'descuento-total', 'valor-total-pagar'].forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) el.value = '';
+      });
 
     const totalFilas = contarFilas();
     for (let i = 1; i <= totalFilas; i++) {
-      const row = getRowInputs(i);
-      if (row?.valorTotal) row.valorTotal.value = '';
+        const row = getRowInputs(i);
+        if (row?.valorTotal) row.valorTotal.value = '';
     }
-  };
+    };
+    const init = () => {
+        const tabla = document.getElementById('detalle-venta');
+        if (!tabla) return;
 
-  /**
-   * Inicializa los listeners de la tabla de factura.
-   */
-  const init = () => {
-    const tabla = document.getElementById('detalle-venta');
-    if (!tabla) return;
+        tabla.addEventListener('input', (e) => {
+        const input = e.target;
+      
+        const nameMatch = input.name?.match(/-([\d]+)$/);
+        if (nameMatch) {
+            calcularFila(parseInt(nameMatch[1], 10));
+        }
+        });
 
-    // Delegación de eventos: escucha cambios en cualquier input de la tabla
-    tabla.addEventListener('input', (e) => {
-      const input = e.target;
-      // Determina el número de fila del input afectado
-      const nameMatch = input.name?.match(/-([\d]+)$/);
-      if (nameMatch) {
-        calcularFila(parseInt(nameMatch[1], 10));
-      }
-    });
-
-    // Botón limpiar formulario
+    
     const resetBtn = document.querySelector('button[type="reset"]');
     if (resetBtn) {
-      resetBtn.addEventListener('click', () => {
-        // Espera a que el reset nativo del form ocurra primero
+        resetBtn.addEventListener('click', () => {
         setTimeout(limpiarCalculos, 0);
       });
     }
@@ -227,151 +204,114 @@ const StratifyFactura = (() => {
     // Validación del formulario de factura
     const form = document.querySelector('form');
     if (form) {
-      const { validators } = StratifyForm;
-      StratifyForm.init(form, {
-        'fecha-emision':   [validators.required],
-        'hora-emision':    [validators.required],
-        'numero-factura':  [validators.required, validators.pattern(
-          /^[A-Za-z]{3}-\d{4}-\d{4}$/,
-          'Formato: 3 letras, guion, 4 dígitos, guion, 4 dígitos (ej: FAC-2026-0001)'
-        )],
-        'tipo-factura':    [validators.required],
-        'numero-documento': [validators.required],
-      });
+        const { validators } = StratifyForm;
+        StratifyForm.init(form, {
+            'fecha-emision':   [validators.required],
+            'hora-emision':    [validators.required],
+            'numero-factura':  [validators.required, validators.pattern(
+                /^[A-Za-z]{3}-\d{4}-\d{4}$/,
+            'Formato: 3 letras, guion, 4 dígitos, guion, 4 dígitos (ej: FAC-2026-0001)'
+            )],
+            'tipo-factura':    [validators.required],
+            'numero-documento': [validators.required],
+        });
     }
-  };
+    };
 
-  // Expone solo lo necesario
-  return { init, calcularFila, limpiarCalculos };
+    return { init, calcularFila, limpiarCalculos };
 })();
-
-
-/* ==========================================================================
-   MÓDULO: StratifyApp
-   Inicialización global y detección de página activa.
-   ========================================================================== */
 const StratifyApp = (() => {
-
-  const { validators } = StratifyForm;
-
-  /**
-   * Inicialización para la página de Login.
-   */
-  const initLogin = () => {
+    const { validators } = StratifyForm;
+    const initLogin = () => {
     const form = document.querySelector('form');
     if (!form) return;
     StratifyForm.init(form, {
-      'name': [validators.required],
-      'pass': [validators.required, validators.minLength(6)],
+        'name': [validators.required],
+        'pass': [validators.required, validators.minLength(6)],
     });
-  };
+    };
+    const initUsuarios = () => {
+        const form = document.querySelector('form');
+        if (!form) return;
+        StratifyForm.init(form, {
+        'Nombre':            [validators.required],
+        'apellido':          [validators.required],
+        'correo':            [validators.required, validators.email],
+        'contraseña':        [validators.required, validators.minLength(8)],
+        'tipo_documento':    [validators.required],
+        'numero_documento':  [validators.required, validators.numeric],
+        });
+    };
+    const initProducto = () => {
+        const form = document.querySelector('form');
+        if (!form) return;
+        StratifyForm.init(form, {
+        'nombre_producto': [validators.required],
+        'codigo_producto': [validators.required],
+        'categoria':       [validators.required],
+        'descripcion':     [validators.required],
+        'precio_compra':   [validators.required, validators.positiveNumber],
+        'precio_venta':    [validators.required, validators.positiveNumber],
+        'stock_actual':    [validators.required],
+        });
+    };
 
-  /**
-   * Inicialización para la página de Usuarios.
-   */
-  const initUsuarios = () => {
-    const form = document.querySelector('form');
-    if (!form) return;
-    StratifyForm.init(form, {
-      'Nombre':            [validators.required],
-      'apellido':          [validators.required],
-      'correo':            [validators.required, validators.email],
-      'contraseña':        [validators.required, validators.minLength(8)],
-      'tipo_documento':    [validators.required],
-      'numero_documento':  [validators.required, validators.numeric],
+    const initProveedores = () => {
+        const form = document.querySelector('form');
+        if (!form) return;
+        StratifyForm.init(form, {
+        'razon_social':           [validators.required],
+        'tipo_documento':         [validators.required],
+        'numero_documento':       [validators.required],
+        'direccion':              [validators.required],
+        'ciudad':                 [validators.required],
+        'nombre_contacto':        [validators.required],
+        'telefono':               [validators.required],
+        'email':                  [validators.required, validators.email],
+        'rubro':                  [validators.required],
+        'descripcion_productos':  [validators.required],
+        });
+    };
+
+    const initUbicacion = () => {
+        const form = document.querySelector('form');
+        if (!form) return;
+        StratifyForm.init(form, {
+            'codigo-ubicacion': [validators.required, validators.pattern(
+            /^[A-Za-z]{4}-\d{3}$/,
+            'Formato: 4 letras, guion, 3 dígitos (ej: UBIC-001)'
+        )],
+        'fecha-registro': [validators.required],
+        'lugar-venta':    [validators.required],
+        'direccion':      [validators.required],
+        'local':          [validators.required],
+        'estado':         [validators.required],
+        'ciudad':         [validators.required],
     });
-  };
+};
 
-  /**
-   * Inicialización para la página de Producto.
-   */
-  const initProducto = () => {
-    const form = document.querySelector('form');
-    if (!form) return;
-    StratifyForm.init(form, {
-      'nombre_producto': [validators.required],
-      'codigo_producto': [validators.required],
-      'categoria':       [validators.required],
-      'descripcion':     [validators.required],
-      'precio_compra':   [validators.required, validators.positiveNumber],
-      'precio_venta':    [validators.required, validators.positiveNumber],
-      'stock_actual':    [validators.required],
-    });
-  };
-
-  /**
-   * Inicialización para la página de Proveedores.
-   */
-  const initProveedores = () => {
-    const form = document.querySelector('form');
-    if (!form) return;
-    StratifyForm.init(form, {
-      'razon_social':           [validators.required],
-      'tipo_documento':         [validators.required],
-      'numero_documento':       [validators.required],
-      'direccion':              [validators.required],
-      'ciudad':                 [validators.required],
-      'nombre_contacto':        [validators.required],
-      'telefono':               [validators.required],
-      'email':                  [validators.required, validators.email],
-      'rubro':                  [validators.required],
-      'descripcion_productos':  [validators.required],
-    });
-  };
-
-  /**
-   * Inicialización para la página de Ubicación.
-   */
-  const initUbicacion = () => {
-    const form = document.querySelector('form');
-    if (!form) return;
-    StratifyForm.init(form, {
-      'codigo-ubicacion': [validators.required, validators.pattern(
-        /^[A-Za-z]{4}-\d{3}$/,
-        'Formato: 4 letras, guion, 3 dígitos (ej: UBIC-001)'
-      )],
-      'fecha-registro': [validators.required],
-      'lugar-venta':    [validators.required],
-      'direccion':      [validators.required],
-      'local':          [validators.required],
-      'estado':         [validators.required],
-      'ciudad':         [validators.required],
-    });
-  };
-
-  /**
-   * Mapa de páginas a sus inicializadores.
-   * Detecta la página por el <title> del documento.
-   */
-  const PAGE_MAP = {
+const PAGE_MAP = {
     'inicio sesion':       initLogin,
     'registro nuevo usuario': initUsuarios,
     'registro de nuevo producto': initProducto,
     'formulario de registro de proveedor': initProveedores,
     'ubicación':           initUbicacion,
     'factura de venta':    StratifyFactura.init,
-  };
+};
 
-  /**
-   * Punto de entrada principal. Se llama al cargar el DOM.
-   */
-  const init = () => {
-    const pageTitle = document.title.toLowerCase().trim();
+  
+    const init = () => {
+        const pageTitle = document.title.toLowerCase().trim();
 
-    // Busca si alguna clave del mapa está incluida en el título
-    for (const [key, initFn] of Object.entries(PAGE_MAP)) {
-      if (pageTitle.includes(key)) {
-        initFn();
+        for (const [key, initFn] of Object.entries(PAGE_MAP)) {
+            if (pageTitle.includes(key)) {
+            initFn();
         break;
-      }
-    }
-  };
+        }
+        }
+    };
 
-  return { init };
+    return { init };
 })();
 
-
-/* ==========================================================================
-   ARRANQUE
-   ========================================================================== */
-document.addEventListener('DOMContentLoaded', StratifyApp.init);
+    document.addEventListener('DOMContentLoaded', StratifyApp.init);
