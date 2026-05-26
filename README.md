@@ -1,5 +1,6 @@
 # Stratify
-Stratify - Sistema Automatizado de Gestión de InventariosStratify es una solución tecnológica diseñada para optimizar la gestión, el control y el flujo de inventarios en tiempo real, este sistema mitiga los errores humanos y reduce las pérdidas económicas ocasionadas por la falta de automatización y el vencimiento de productos.
+Stratify - Sistema Automatizado de Gestión de Inventarios
+Stratify es una solución tecnológica diseñada para optimizar la gestión, el control y el flujo de inventarios en tiempo real, este sistema mitiga los errores humanos y reduce las pérdidas económicas ocasionadas por la falta de automatización y el vencimiento de productos.
 Características Principales
 Control en Tiempo Real: Registro preciso de las entradas y salidas de mercancía, asociando fecha, cantidad y el usuario responsable.  
 Alertas Inteligentes: Notificaciones automáticas cuando un producto se encuentra fuera de stock o está próximo a alcanzar su fecha de vencimiento.  
